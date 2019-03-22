@@ -1,0 +1,23 @@
+program = node
+
+node = '[' identifier attr* value* ']'
+attr = ':'identifier constant
+value =
+	: constant
+	| expression
+
+constant = 
+	: plain-text
+	| implicit-param-call
+
+expression = 
+	: node
+	| loop
+
+loop = 'for-each' list node
+list = '{' element* '}'
+element = plaint-text|list
+implicit-param-call = 'it'(.index)
+
+index = digit+
+plain-text = ''' symbol* ''' 

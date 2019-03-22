@@ -1,0 +1,43 @@
+struct groups = ['first', 'second', 'third']
+struct coordinates = [['20.0', '30.0'], ['22', '33']]
+struct field = [
+	groups: groups, 
+	coordinates: coordinates, 
+	name: 'field-name',
+	square: '30'
+]
+
+[report
+	[field :name 'field-name'
+		[square '30.0']
+		[groups 
+			for-each {'first' 'second' 'third'} 
+				[group it]]
+
+		[coordinates 
+			for-each {{'30' '20'}, {'31' '21'}}
+				[coordinate 
+					[lat it.0]
+					[lon it.1]]]]
+]
+
+<report>
+    <field name="field-name">
+        <square>'30'</square>
+        <groups>
+            <group>first</group>
+            <group>second</group>
+            <group>third</group>
+        </groups>
+        <coordinates>
+            <point>
+                <lat>20.0</lat>
+                <lon>30.0</lon>
+            </point>
+            <point>
+                <lat>22</lat>
+                <lon>33</lon>
+            </point>
+        </coordinates>
+    </field>
+</report>
