@@ -1,0 +1,13 @@
+[report
+    [field :name 'field-name'
+        [square '30.0']
+        [groups
+            for-each {'first' 'second' 'third'}
+                [group it]]
+
+        [coordinates
+            for-each {{'30' '20'} {'31' '21'}}
+                [coordinate
+                    [lat it.0]
+                    [lon it.1]]]]
+]
