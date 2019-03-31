@@ -9,13 +9,16 @@ import java.io.File
 const val outputFile = "src/main/kotlin/generated/GenerateXml.kt"
 
 fun main(args: Array<String>) {
-    println(args.asList())
+    println("Source file location: ${args.asList()}")
     val fileName = args[0]
     val content = readFile(fileName)
 
     val lexer = Lexer(content)
-    val parser = Parser(lexer.allTokens())
+    val tokens = lexer.allTokens()
+    println("Tokens: $tokens")
+    val parser = Parser(tokens)
     val rootNode = parser.parse()
+    println("Root node: $rootNode")
     val semanticCheck = validate(rootNode)
 
     if(semanticCheck is Failure) {

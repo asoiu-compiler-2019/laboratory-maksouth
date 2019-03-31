@@ -60,7 +60,7 @@ class Lexer(private val input: String) {
         val token = recognizeLanguageWord(
             recognizerFactory.string(),
             { TokenType.StringValue },
-            default = unknownToken()
+            default = ::unknownToken
         )!!
 
         val stringWithoutQuotes = token.value.replace("\'", "")
@@ -91,17 +91,17 @@ class Lexer(private val input: String) {
     fun recognizeNumber(): Token = recognizeLanguageWord(
         recognizerFactory.number(),
         { TokenType.Integer },
-        default = unknownToken()
+        default = ::unknownToken
     )!!
 
     private fun recognizeLanguageWord(
         recognizer: (String) -> Pair<Boolean, String>,
         typeResolver: (String) -> TokenType,
-        default: Token? = null
+        default: (String) -> Token? = {null}
     ): Token? {
         val (isKeyword, keyword) = recognizer(input.substring(currentParsePosition))
 
-        if (!isKeyword) return default
+        if (!isKeyword) return default(keyword)
 
         val type = typeResolver(keyword)
         return sequenceSymbolToken(type, keyword)
@@ -136,9 +136,10 @@ class Lexer(private val input: String) {
         return Token(type, currentParseLine, column)
     }
 
-    private fun unknownToken(): Token = Token(
+    private fun unknownToken(value: String? = null): Token = Token(
         TokenType.Unrecognized,
         currentParseLine,
-        currentParseColumn
+        currentParseColumn,
+        value
     )
 }
